@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <%
+            if (flash)
+            {
+                console.dir("flash: "+flash);
+        %>
+            <p>----------------FLASH---------------</p>
+            <p><%=flash%></p>       
+        <%
+            }
+            if (hulk)
+            {
+        %>
+            <p>----------------HULK---------------</p>
+            <p><%=hulk%></p>
+        <%
+            }
+        %>
+    </body>
+</html>

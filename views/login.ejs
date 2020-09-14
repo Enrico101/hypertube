@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>  
+        <title id="title" >Login</title>
+        <style>
+                .fa {
+            padding: 8px;
+            font-size: 30px;
+            width: 50px;
+            text-align: center;
+            text-decoration: none;
+            }
+
+            .fa:hover {
+            opacity: 0.7;
+            }
+            
+            /* Facebook */
+            .fa-facebook {
+            background: white;
+            color: #232a34;
+            }
+
+            .fa-user-plus {
+                background: white;
+                color: #232a34;
+            }
+        </style>
+        <%
+            if (err == "a field is empty")
+            {
+        %>
+                <script>
+                    alert("There is an emtpy field.");
+                    window.location.replace("http://localhost:3002/login");
+                </script>
+        <%
+            }
+            else if (err == "password or username is incorrect")
+            {
+        %>
+                <script>
+                    var selector = document.getElementById("language");
+
+                    if (selector.value == "English")
+                    {
+                        alert("Username or password is incorrect.");
+                    }
+                    else if (selector.value == "French")
+                    {
+                        alert("L'identifiant ou le mot de passe est incorrect.");
+                    }
+                    else if (selector.value == "Spanish")
+                    {
+                        alert("Nombre de usuario o contraseña incorrecta.");
+                    }
+                    else
+                    {
+                        alert("Username or password is incorrect."); 
+                    }
+                    window.location.replace("http://localhost:3002/login");
+                </script>        
+        <%
+            }
+            else if (err == "user does not exist")
+            {
+        %>
+                <script>
+                    var selector = document.getElementById("language");
+
+                    if (selector.value == "English")
+                    {
+                        alert("User does exist.");
+                    }
+                    else if (selector.value == "French")
+                    {
+                        alert("L'utilisateur n'existe pas.");
+                    }
+                    else if (selector.value == "Spanish")
+                    {
+                        alert("El usuario no existe.");
+                    }
+                    window.location.replace("http://localhost:3002/login");
+                </script>
+        <%
+            }
+        %>
+    </head>
+    <body onload="setPreferedLanguageLogin();" style="background-image: url('https://i.pinimg.com/originals/08/78/66/087866fe600793994f5ced6ac36de606.gif'); background-repeat: no-repeat; background-size: auto; background-color: black;">
+        <div class="container-fluid">
+            <header style="background-color: #232a34; width: 1auto; margin-left: -50px;">
+                <div>
+                    <div class="font-weight-bold" style="font-size: 35px; color: white; font-family: monospace; margin-left: 50px;">
+                        <p>HyperTube</p>
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <form action="/login" name="login" method="post" style="margin-left: 6%; margin: auto;">
+                    <fieldset style="border: 1px solid #232a34; border-radius: 10px; width: 305px; background-color: #232a34;">
+                        <legend id="legend" style="width: auto; color: white; position: relative; top: 35px; left: 15px;">Login</legend>
+                            <div class="col-sm-6" style="margin-top: 50px;">
+                                <input id="username" class="form-control" type="text" name="username" placeholder="Username" style="width: 270px; height: 30px;" required>
+                                <br />
+                                <input id="password" class="form-control" type="password" name="password" placeholder="Password" style="width: 270px; height: 30px;" required>
+                                <br />
+                                <br />
+                                <input id="submit" type="submit" class="btn btn-dark" style="width: 270px; background-color: white; color: #232a34;" name="submit" value="Login">
+                                <p></p>
+                                <p id="orOne" style="margin-left: 125px; color: white" class="font-weight-light">OR</p>
+                                <a id="signupLink" class="btn btn-dark" style="margin-top: -10px; width: 270px; background-color: white; color: #232a34;" href="/signup">SignUp</a>
+                                <p></p>
+                                <p id="orTwo" style="margin-left: 125px; color: white" class="font-weight-light">OR</p>
+                                <a id="passwordResetLink" class="btn btn-dark" style="margin-top: -10px; margin-bottom: 44px; width: 270px; background-color: white; color: #232a34;" href="/password_reset">Password Reset</a>
+                            </div>
+                            <div style="margin-left: 36%;">
+                                <a href="/login/auth/facebook" class="fa fa-facebook"></a>
+                                <a href="/login/auth/42" class="fa fa-user-plus"></a>
+                            </div>
+                            <br />
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <script src="../javacript_DOM/language.js">
+        </script>
+    </body>
+    <footer style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 100px; width: auto; text-align: center;">
+        <select id="language" onchange="languageLogin()" name="Language" class="custom-select mb-3" style="width: 130px; margin-top: 7px;">
+          <option selected>Language</option>
+          <option  value="English">English</option>
+          <option value="French">French</option>
+          <option value="Spanish">Spanish</option>
+        </select>
+        <p>© 2020 hypertube</p>
+    </footer>
+</html>

@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>  
+        <title>Password Reset</title>
+        <style>
+                .fa {
+            padding: 8px;
+            font-size: 30px;
+            width: 50px;
+            text-align: center;
+            text-decoration: none;
+            }
+
+            .fa:hover {
+            opacity: 0.7;
+            }
+            
+            /* Facebook */
+            .fa-facebook {
+            background: white;
+            color: #232a34;
+            }
+
+            .fa-user-plus {
+                background: white;
+                color: #232a34;
+            }
+        </style>
+        <%
+            if (err == "missing info")
+            {
+        %>
+                <script>
+                    alert("Please fill out all fields");
+                </script>
+        <%
+            }
+            else if (err == "information does not exist")
+            {
+        %>
+                <script>
+                    alert("There is no account that exists with the provided information.");
+                </script>    
+        <%
+            }
+            else if (err == "passwords did not match")
+            {
+        %>
+                <script>
+                    alert("Incorrect password provided.");
+                </script>
+        <%
+            }
+            else if (succ == "successfully changed password")
+            {
+        %>
+                <script>
+                    alert("Successfully updated password, Redirecting now to login page.");
+                    window.location.href = "http://localhost:3002/login";
+                </script>
+        <%
+            }
+            else if (err == "password format is incorrect")
+            {
+        %>
+                <script>
+                    alert("The password format has to have at least one capital letter, one number, and one lowercase letter and the length has to be greater then 6 characters.");
+                </script>
+        <%
+            }
+        %>
+    </head>
+    <body style="background-image: url('https://i.pinimg.com/originals/08/78/66/087866fe600793994f5ced6ac36de606.gif'); background-repeat: no-repeat; background-size: auto; background-color: black;">
+        <div class="container-fluid">
+            <header style="width: 50%; background-color: #232a34; width: 1500px; margin-left: -50px;">
+                <div>
+                    <div class="font-weight-bold" style="font-size: 35px; color: white; font-family: monospace; margin-left: 50px;">
+                        <p>HyperTube</p>
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <form action="/password_reset/valid_email" name="login" method="post" style="margin-left: 6%; margin: auto;">
+                    <fieldset style="border: 1px solid #232a34; border-radius: 10px; width: 305px; background-color: #232a34;">
+                        <legend style="width: auto; color: white; position: relative; top: 35px; left: 15px;">Password Reset</legend>
+                            <div class="col-sm-6" style="margin-top: 50px;">
+                                <input id="username" class="form-control" type="text" name="username" placeholder="Username" style="width: 270px; height: 30px;" required>
+                                <br />
+                                <br />
+                                <input id="old_password" class="form-control" type="password" name="old_password" placeholder="Old Password" style="width: 270px; height: 30px;" required>
+                                <br />
+                                <br />
+                                <input id="new_password" class="form-control" type="password" name="new_password" placeholder="New Password" style="width: 270px; height: 30px;" required>
+                                <br />
+                                <br />
+                                <input type="submit" class="btn btn-dark" style="width: 270px; background-color: white; color: #232a34;" name="submit" value="Reset password">
+                                <p></p>
+                                <p style="margin-left: 125px; color: white" class="font-weight-light">OR</p>
+                                <a class="btn btn-dark" style="margin-top: -10px; width: 270px; background-color: white; color: #232a34;" href="/signup">Login</a>
+                            </div>
+                            <br />
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <footer>© 2020 matcha project</footer>
+    </body>
+</html>

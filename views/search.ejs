@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+        </style>
+        <title>home</title>
+    </head>
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px;" href="/home">Hypertube</a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/logout"><p style="font-style: 10px; align-self: center;">Logout</p></a>
+                <div class="search-container">
+                    <form action="/search" method="GET">
+                      <input type="text" placeholder="Search.." name="search" style="height: 33px; border-radius: 5px; border: 0px;">
+                      <input type="submit" name="submit" value="Search" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;">
+                    </form>
+                </div>
+            </nav>
+            <%
+                if (search_results)
+                {
+                    var x = 0;
+                    while (search_results.results[x])
+                    {
+                        var url = "https://image.tmdb.org/t/p/w500"+search_results.results[x].poster_path;
+                        if (x == 0)
+                        {
+            %>
+                            <div class="card" style="width:400px; float: left; margin-right: 10px; margin-top: 10px; margin-bottom: 10px">
+                                <img class="card-img-top" src=<%=url%>>
+                                <div class="card-body">
+                                    <h4 class="card-title">John Doe</h4>
+                                    <p class="card-text">Some example text.</p>
+                                    <a href="#" class="btn btn-primary">See Profile</a>
+                                </div>
+                            </div>
+            <%
+                        }
+                        else
+                        {
+            %>
+                            <div class="card" style="width:400px; float: left; margin-right: 10px; margin-bottom: 10px;">
+                                <img class="card-img-top" src=<%=url%>>
+                                <div class="card-body">
+                                    <h4 class="card-title">John Doe</h4>
+                                    <p class="card-text">Some example text.</p>
+                                    <a href="#" class="btn btn-primary">See Profile</a>
+                                </div>
+                            </div>
+            <%
+                        }
+                        x++;
+                    }
+                }
+            %>
+        </div>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">� 2020 matcha project</footer>
+</html>

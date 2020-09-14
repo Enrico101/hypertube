@@ -1,0 +1,235 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+              /* Make the image fully responsive */
+            .carousel-inner img {
+                width: 40%;
+                height: 60%;
+                margin-left: 10%;
+            }
+        </style>
+        <title>home</title>
+    </head>
+
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px; margin-right: 5%;" href="/home">Hypertube</a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/logout"><p style="font-style: 10px; align-self: center;">Logout</p></a>
+                <a href="/search/movie">movies</a>
+                <span style="color: white;"> | </span>
+                <%
+                    if (search_results)
+                    {
+                %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="margin-left: 7px; height: 35px; margin-top: 6.4px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;">
+                            Sort
+                        </button>
+                <%
+                    }
+                %>
+                <a href="/search/series">series</a>
+                <div class="search-container">
+                    <form action="/search/series" method="GET">
+                      <input type="text" placeholder="Search for a series" name="search" style="height: 33px; border-radius: 5px; border: 0px;">
+                      <input type="submit" name="submit" value="Search" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;">
+                    </form>
+                </div>
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                          <form>
+                              <h1 style="font-family: monospace;">Sort</h1>
+                              <input type="hidden" value=<%=search_results%>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </nav>
+            <form action="/search/series" style="width: 50%; margin: auto;" method="get">
+                <select name="sortingResults" class="custom-select">
+                  <option selected>Custom Select Menu</option>
+                  <option value="name.asc">name.asc</option>
+                  <option value="name.desc">name.desc</option>
+                  <option value="popularity.asc">popularity.asc</option>
+                  <option value="popularity.desc">popularity.desc</option>
+                </select>
+                <input type="submit" name="submit" value="Sort" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px;">
+              </form>
+            <%
+                if (search_results)
+                {
+            %>
+                    <table class="table table-borderless" style="margin-left: 6%">
+                        <tbody>
+                            <tr>
+                                <td style="width: 20%;">
+                                    <form action="/search/series/seasons" method="POST">
+                                    </form>
+                                </td>
+                            </tr>
+
+            <%
+                        var x = 0;
+                        var a = 0;
+                        while (x != rows) 
+                        {
+            %>
+                            <tr style="width: 50%;">
+            <%
+                                var row_count = 5;
+                                if (a % row_count == 0 && a != 0)
+                                    a++;
+                                while (search_results[a])
+                                {
+                                    console.log("loops: "+a);
+                                    if (a % row_count == 0 && a != 0)
+                                        break;
+                                    if (search_results[a].imageUrl == "N/A" || search_results[a].imageUrl == "https://image.tmdb.org/t/p/w500null")
+                                        var url = "https://media.istockphoto.com/vectors/image-unavailable-icon-vector-id1199906477";
+                                    else
+                                        var url = search_results[a].imageUrl;
+                                    console.log("urlpic: "+url);
+                                    var title = search_results[a].title;
+                                    var summary = search_results[a].summary;
+                                    var id = search_results[a].id;
+                                    var provider = search_results[a].provider;
+
+                                    
+                                    if (provider == "omdb")
+                                    {
+            %> 
+                                        <td style="width: 20%;">
+                                            <form action="/search/series/seasons" method="POST">
+                                                <img src=<%=url%> style="width: 50%;">
+                                                <p style="color: white; width: 20px; font-family: monospace;"><%=title%></p>
+                                                <input type="hidden" value=<%=id%> name="id">
+                                                <input type="hidden" value=<%=provider%> name="provider">
+                                                <input type="hidden" value=<%=url%> name="poster">
+                                                <%
+                                                        if (seriesWatched.indexOf(title) != -1)               
+                                                        {
+                                                %>
+                                                            <p style="color: white; font-family: monospace;">You started to watch this series</p>
+                                                <%
+                                                        }
+                                                %>
+                                                <input class="btn btn-primary" type="submit" value="WATCH" name="submit">
+                                            </form>
+                                        </td>               
+            <%
+                                    }
+                                    else if (provider == "moviedb")
+                                    {
+            %>
+                                        <td style="width: 20%;">
+                                            <form action="/search/series/seasons" method="POST">
+                                                <img src=<%=url%> style="width: 50%;">
+                                                <p style="color: white; width: 20px; font-family: monospace;"><%=title%></p>
+                                                <input type="hidden" value=<%=id%> name="id">
+                                                <input type="hidden" value=<%=provider%> name="provider">
+                                                <input class="btn btn-primary" type="submit" value="WATCH" name="submit">
+                                                <%
+                                                if (seriesWatched.indexOf(title) != -1)               
+                                                {
+                                                %>
+                                                            <p style="color: white; font-family: monospace;">You started to watch this series</p>
+                                                <%
+                                                        }
+                                                %>
+                                            </form>
+                                        </td>
+            <%
+                                    }
+                                    a++;
+                                }
+            %>
+                            </tr>
+            <%
+                            x++;
+                        }
+            %>
+                        </tbody>
+                    </table>
+            <%
+                }
+                else if (popular_series)
+                {
+                    console.log("popular_series found");
+            %>
+                <h1 style="font-family: monospace; color: white; margin-top: 2%; margin-left: 5%">Popular shows</h1>
+                <div id="demo" class="carousel slide" data-ride="carousel" style="margin-top: 2%;">
+                    <ul class="carousel-indicators">
+                    </ul>
+                    <div class="carousel-inner">
+            <%
+                    var y = 0;
+                    while (popular_series[y])
+                    {
+                        var url = "https://image.tmdb.org/t/p/w500"+popular_series[y].poster_path;
+                        var title = popular_series[y].original_title;
+                        var summary = popular_series[y].overview;
+                        var provider = "moviedb";
+                        var id = popular_series[y].id;
+
+                        if (y == 0)
+                        {
+            %>
+                            <div class="carousel-item active">
+            <%
+                        }
+                        else
+                        {
+            %>
+                            <div class="carousel-item">
+            <%
+                        }
+                        console.log("id: "+id);
+                        console.log("provider: "+provider);
+            %>
+                            <form action="/search/series/seasons" method="POST">
+                                <p style="color: white; width: 20px; font-family: monospace;"><%=title%></p>
+                                <input type="hidden" value=<%=id%> name="id">
+                                <input type="hidden" value=<%=provider%> name="provider">
+                                <input type="hidden" value=<%=url%> name="poster">
+                                <input type="image" src=<%=url%> alt="Submit" width="250" height="350">
+                            </form>
+                            <div class="carousel-caption" style="margin-left: 40%;">
+                                <h3><%=title%></h3>
+                                <p><%=summary%></p>
+                            </div>   
+                        </div>
+            <%
+                        y++;
+                    }
+            %>
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            <%
+                }
+            %>
+        </div>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">� 2020 matcha project</footer>
+</html>

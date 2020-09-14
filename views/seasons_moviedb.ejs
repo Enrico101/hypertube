@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+              /* Make the image fully responsive */
+            .carousel-inner img {
+                width: 40%;
+                height: 60%;
+                margin-left: 10%;
+            }
+        </style>
+        <title>home</title>
+    </head>
+
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px; margin-right: 5%;" href="/home">Hypertube</a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/logout"><p style="font-style: 10px; align-self: center;">Logout</p></a>
+                <a href="/search/movie">movies</a>
+                <span style="color: white;"> | </span>
+                <a href="/search/series">series</a>
+                <div class="search-container">
+                    <form action="/search/series" method="GET">
+                      <input type="text" placeholder="Search for a series" name="search" style="height: 33px; border-radius: 5px; border: 0px;">
+                      <input type="submit" name="submit" value="Search" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;">
+                    </form>
+                </div>
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                          <form>
+                              <h1 style="font-family: monospace;">Sort</h1>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </nav>
+            <%
+                var x = 0;
+                while (seasons[x])
+                {
+                    var imageUrl = "https://image.tmdb.org/t/p/w500"+seasons[x].poster_path;
+                    
+                    if (imageUrl == "https://image.tmdb.org/t/p/w500null")
+                        imageUrl = "https://media.istockphoto.com/vectors/image-unavailable-icon-vector-id1199906477";
+                    var sNumber = seasons[x].season_number;
+                    var summary = seasons[x].overview;
+            %>
+                    <div class="row" style="height: 250px; margin-bottom: 100px;">
+                        <div class="col-sm-8">
+                            <h2 style="margin-left: 50%; color: white; font-family: monospace; ">Season: <%=sNumber%></h2>
+                            <p style="margin-left: 20px; float: right; color: white; font-family: monospace; height: 180px; width: 500px;"><%=summary%></p>
+                            <form action="/search/series/seasons/episodes" method="POST" style="margin-left: 20px; float: right;">
+                                <input type="hidden" value=<%=provider%> name="provider">
+                                <input type="hidden" value=<%=tv_id%> name="tv_id">
+                                <input type="hidden" value=<%=sNumber%> name="season_number">
+                                <input class="btn btn-primary" type="submit" value="view episodes" name="submit">
+                            </form>
+                        </div>
+                        <div class="col-sm-4">
+                            <img style="width: 180px;" src=<%=imageUrl%>>
+                        </div>
+                    </div>
+            <% 
+                    x++;
+                }
+            %>  
+        </div>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">� 2020 matcha project</footer>
+</html>

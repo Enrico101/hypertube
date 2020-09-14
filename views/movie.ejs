@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+        </style>
+        <title>home</title>
+    </head>
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px; margin-right: 5%;" href="/home">Hypertube</a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/logout"><p style="font-style: 10px; align-self: center;">Logout</p></a>
+                <a href="/search/movie">movies</a>
+                <span style="color: white;"> | </span>
+                <a href="/search/series">series</a>
+                <div class="search-container">
+                    <form action="/search/movie" method="GET">
+                      <input type="text" placeholder="  Search for a movie" name="search" style="height: 33px; border-radius: 5px; border: 0px;">
+                      <input type="submit" name="submit" value="Search" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;">
+                    </form>
+                </div>
+            </nav>
+            <form action="/search/movie" style="width: 50%; margin: auto;" method="get">
+                <select name="sortingResults" class="custom-select">
+                  <option selected>Custom Select Menu</option>
+                  <option value="name.asc">name.asc</option>
+                  <option value="name.desc">name.desc</option>
+                  <option value="popularity.asc">popularity.asc</option>
+                  <option value="popularity.desc">popularity.desc</option>
+                </select>
+                <input type="submit" name="submit" value="Sort" class="btn btn-primary" style="margin-left: 7px; height: 35px; margin-top: -1px; margin: auto;">
+              </form>
+            <table>
+            <%
+                if (search_results)
+                {
+                    var x = 0;
+                    var y = 0;
+                    console.log("row_count: "+row_count);
+                    while (x != row_count)
+                    {
+            %>
+                        <tr>
+            <%
+                            if (y % row_count == 0 && y != 0)
+                                y++;
+                            while (search_results[y])
+                            {
+                                if (y % row_count == 0 && y != 0)
+                                    break;
+                                if (search_results[y].poster == "N/A" || search_results[y].poster == "https://image.tmdb.org/t/p/w500null")
+                                    var url = "https://media.istockphoto.com/vectors/image-unavailable-icon-vector-id1199906477";
+                                    else
+                                        var url = search_results[y].poster;
+            %>
+                                <td>
+                                    <form action="/search/movie/video_player" method="POST">
+                                        <input type="hidden" value=<%=search_results[y].provider%> name="provider">
+                                        <input type="hidden" value=<%=search_results[y].id%> name="movieId">
+                                        <input type="hidden" value=<%=search_results[y].title%> name="movieName">
+                                        <input type="image" src=<%=url%> alt="Submit" style="width: 150px; height: 200px;">
+                                    </form>
+                                    <p style="color: white;">Title: <%=search_results[y].title%></p>
+                                    <p style="color: white;">Release date: <%=search_results[y].release_date%></p>
+                                    <%
+                                        if (movieWatched.indexOf(search_results[y].title) != -1)
+                                        {
+                                    %>
+                                            <p style="color: white; font-family: monospaces;">Movie Watched!!!!</p>
+                                    <%
+                                        }
+                                    %>
+                                </td>
+            <%
+                                y++;
+                            }
+            %>
+                        </tr>
+            <%
+                        x++;
+                    }
+                }
+                else if (popularMovies)
+                {
+                    console.log("popular_series found");
+            %>
+                <h1 style="font-family: monospace; color: white; margin-top: 2%; margin-left: 5%">Popular shows</h1>
+                <div id="demo" class="carousel slide" data-ride="carousel" style="margin-top: 2%;">
+                    <ul class="carousel-indicators">
+                    </ul>
+                    <div class="carousel-inner">
+            <%
+                    var y = 0;
+                    while (popularMovies[y])
+                    {
+                        var url = "https://image.tmdb.org/t/p/w500"+popularMovies[y].poster_path;
+                        var title = popularMovies[y].title;
+                        var summary = popularMovies[y].overview;
+                        var provider = "moviedb";
+                        var movieId = popularMovies[y].id;
+
+                        if (y == 0)
+                        {
+            %>
+                            <div class="carousel-item active">
+            <%
+                        }
+                        else
+                        {
+            %>
+                            <div class="carousel-item">
+            <%
+                        }
+            %>
+                            <form action="/search/movie/video_player" method="POST">
+                                <input type="hidden" value=<%=provider%> name="provider">
+                                <input type="hidden" value=<%=movieId%> name="movieId">
+                                <input type="hidden" value=<%=title%> name="movieName">
+                                <input type="image" src=<%=url%> alt="Submit" width="250" height="350">
+                            </form>
+                            <div class="carousel-caption" style="margin-left: 40%;">
+                                <h1 style="color: white"><%=title%></h3>
+                                <p style="color: white"><%=summary%></p>
+                            </div>   
+                        </div>
+            <%
+                        y++;
+                    }
+            %>
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            <%
+                }
+            %>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">� 2020 matcha project</footer>
+</html>

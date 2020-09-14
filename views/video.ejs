@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+              /* Make the image fully responsive */
+            .carousel-inner img {
+                width: 40%;
+                height: 60%;
+                margin-left: 10%;
+            }
+        </style>
+        <title>home</title>
+    </head>
+
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px; margin-right: 5%;" href="/home">Hypertube</a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/logout"><p style="font-style: 10px; align-self: center;">Logout</p></a>
+                <a class="btn btn-primary" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #12161b; border-color: #12161b;" href="/home"><p style="font-style: 10px; align-self: center;">Home</p></a>
+            </nav>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-4">
+                    <%
+                        var imUrl = "http://localhost:3002/search/series/subtitle/"+imdbId;
+                        console.log("imdb: "+imUrl);
+                    %>
+                    <video id="myVideo" src="http://localhost:3002/search/series/video" style="margin-left: 30px;" width="400" height="340" controls>
+                        <track src=<%=imUrl%> kind="subtitles" srclang="en" label="English">
+                        <track src=<%=imUrl%> kind="subtitles" srclang="fr" label="French">
+                        <track src=<%=imUrl%> kind="subtitles" srclang="sp" label="Spanish">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="col-sm-8">
+                    <h1 style="color: white; font-family: monospace">
+                        Episode <%=episode_info.episode_number%>: <%=episode_info.name%>
+                    </h1>                    
+                    <p style="color: white; font-family: monospace">
+                        <%= episode_info.overview%>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="cole-sm-12">
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" rows="5" id="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%
+            if (progress == "start")
+            {
+                console.log("started");
+            }
+        %>
+        <script>
+            /*var vid = document.getElementById("myVideo");
+            vid.onerror = function() {
+                //alert("Error! Something went wrong");
+                console.log("Could load video, realoding the video element right now");
+                vid.load();
+            };
+
+            var vid = document.getElementById("myVideo");
+            vid.onloadedmetadata = function() {
+                alert("Metadata for video loaded");
+            };*/
+        </script>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">� 2020 matcha project</footer>
+</html>

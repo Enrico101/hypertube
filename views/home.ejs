@@ -1,0 +1,234 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        <style>
+            .collapsing 
+            {
+                  filter: blur(4px);
+            }
+            .search-container
+            {
+                margin-top: 7px;
+                margin-right: 35%;
+                float: right;
+            }
+        </style>
+        <title>home</title>
+    </head>
+    <body style="background-image: url('https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <%
+            if (results)
+            {
+            }
+            else
+            {
+                var results = "";
+            }
+            if (users)
+            {
+            }
+            else
+            {
+                var users = "";
+            }
+        %>
+        <div class="container-fluid-sm">
+            <nav style="background-color: #232a34;">
+                <a class="navbar-brand" style="color: white; font-family: monospace; font-size: 25px; margin-left: 20px; margin-right: 5%;" href="/home">Hypertube</a>
+                <a class="btn btn-primary fas fa-sign-out-alt" style="height: 35px; margin-top: 10px; float: right; margin-right: 10px; background-color: #232a34; border: 0px; color: white" href="/logout"></a>
+                <button class="fas fa-cog" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #232a34; border: 0px; color: white" data-toggle="modal" data-target="#myModal"></button>
+                <button class="fas fa-users" style="height: 35px; margin-top: 6px; float: right; margin-right: 10px; background-color: #232a34; border: 0px; color: white" data-toggle="modal" data-target="#myModalUsers"></button>
+                
+                <a href="/search/movie">movies</a>
+                <span style="color: white;"> | </span>
+                <a href="/search/series">series</a>
+            </nav>
+            <!--Modal for user profiles-->
+            <div>
+            <div class="modal fade" id="myModalUsers">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Other users</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <%
+                            if (users)
+                            {
+                                var x = 0;
+                                while (users[x])
+                                {
+                                    if (users[x].profile_picture == null)
+                                    {
+                        %>
+                                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" width="100px" height="100px" style="border-radius: 200px; margin-left: 80px;">
+                        <%
+                                    }
+                                    else
+                                    {
+                                        var imagePath = "http://localhost:3002/uploads/"+users[x].profile_picture;
+                        %>
+                                        <img src=<%=imagePath%> width="100px" height="100px" style="border-radius: 200px; margin-left: 80px;">
+                        <%
+                                    }
+                        %>
+                                    <span style="margin-left: 15px;">
+                        <%=
+                                        users[x].username;
+                        %>
+                                    </span>
+                                    <br>
+                                    <hr>
+                        <%
+                                    x++;
+                                }
+                            }
+                        %>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Modal for settings-->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title">Settings</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <!-- Change email-->
+                        <form action="/settings/email" style="margin-left: 25%;" method="POST"> 
+                            <p>
+                                    Change Email
+                            </p>
+                            <input type="email" name="email" placeholder="Email">
+                            <input style="height: 30px; border: 1px solid; border-radius: 5px; border-color: #34a4eb; background-color: #34a4eb; color: white;" type="submit" value="Submit" name="Submit">                
+                        </form>
+                        <!--Change username-->
+                        <form action="/settings/username" style="margin-left: 25%;" method="POST">
+                            <p>
+                                    Change username
+                            </p>
+                            <input type="text" name="username" placeholder="username">
+                            <input style="height: 30px; border: 1px solid; border-radius: 5px; border-color: #34a4eb; background-color: #34a4eb; color: white;" type="submit" value="Submit" name="Submit">
+                        </form>
+                        <!--Image upload-->
+                        <form action="/settings/profile_pic" style="margin-left: 10%;" method="POST" enctype="multipart/form-data">
+                            <p>Choose image</p>
+                            <input type="file" name="image">
+                            <input style="height: 30px; border: 1px solid; border-radius: 5px; border-color: #34a4eb; background-color: #34a4eb; color: white;" type="submit" value="Submit" name="Submit">
+                        </form>
+                    </div>
+               
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Toast message-->
+            <%
+            console.log("results: "+results);
+                if (results == "true")
+                {
+            %>
+                <div class="toast" style="float: right; margin-top: 30px; margin-right: 10px;" data-autohide="false">
+                    <div class="toast-header">
+                    <strong class="mr-auto text-primary">Message</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                    </div>
+                    <div class="toast-body">
+                        Your email was successfully changed.
+                    </div>
+                </div>
+            <%
+                }
+                else if (results == "username_true")
+                {
+            %>
+                <div class="toast" style="float: right; margin-top: 30px; margin-right: 10px;" data-autohide="false">
+                    <div class="toast-header">
+                    <strong class="mr-auto text-primary">Message</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                    </div>
+                    <div class="toast-body">
+                        Your username was successfully changed.
+                    </div>
+                </div>
+            <%
+                }
+                else if (results == "username_false")
+                {
+            %>
+                <div class="toast" style="float: right; margin-top: 30px; margin-right: 10px;" data-autohide="false">
+                    <div class="toast-header">
+                    <strong class="mr-auto text-primary">Message</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                    </div>
+                    <div class="toast-body">
+                        An error occured when trying to change your username.
+                    </div>
+                </div>
+            <%
+                }
+                else if (results == "false")
+                {
+            %>
+                <div class="toast" style="float: right; margin-top: 30px; margin-right: 10px;" data-autohide="false">
+                    <div class="toast-header">
+                    <strong class="mr-auto text-primary">Message</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                    </div>
+                    <div class="toast-body">
+                        An errror occured when trying to change your email. Please try again later.
+                    </div>
+                </div>
+            <%
+                }
+                else if (results == "upload complete")
+                {
+            %>
+                    <div class="toast" style="float: right; margin-top: 30px; margin-right: 10px;" data-autohide="false">
+                        <div class="toast-header">
+                        <strong class="mr-auto text-primary">Message</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                        </div>
+                        <div class="toast-body">
+                            Profile image uploaded.
+                        </div>
+                    </div>
+            <%
+                }
+            %>
+            <script>
+                $(document).ready(function(){
+                $('.toast').toast('show');
+                });
+            </script>
+    </body>
+    <footer class="fixed-bottom" style="margin-top: 500px; background-color: #232a34; font-family: monospace; color: white; height: 45px; text-align: center;">© 2020 matcha project</footer>
+</html>
